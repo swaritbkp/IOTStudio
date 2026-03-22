@@ -9,11 +9,13 @@ export const SensorNode = memo(({ data, selected }: NodeProps) => {
   const d = data as {
     label: string;
     icon: string;
+    imageUrl?: string;
     liveValue: unknown;
     interactable?: boolean;
     simulationType?: string;
     nodeId: string;
     pins: { id: string }[];
+    description?: string;
   };
 
   const removeComponent = useBoardStore((s) => s.removeComponent);
@@ -48,6 +50,7 @@ export const SensorNode = memo(({ data, selected }: NodeProps) => {
           : 'border-border hover:border-border-active',
         'animate-drop-bounce'
       )}
+      title={d.description}
     >
       <Handle
         type="target"
@@ -56,8 +59,12 @@ export const SensorNode = memo(({ data, selected }: NodeProps) => {
       />
 
       <div className="flex flex-col items-center gap-1.5">
-        <div className="w-9 h-9 rounded-xl bg-accent-muted flex items-center justify-center">
-          <IconComp size={20} className="text-accent" />
+        <div className="w-12 h-12 rounded-xl bg-accent-muted flex items-center justify-center overflow-hidden">
+          {d.imageUrl ? (
+            <img src={d.imageUrl} alt={d.label} className="w-full h-full object-contain" />
+          ) : (
+            <IconComp size={20} className="text-accent" />
+          )}
         </div>
         <div className="text-xs font-semibold text-text-primary truncate max-w-[120px]">
           {d.label}

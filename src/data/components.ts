@@ -7,6 +7,7 @@ export const COMPONENTS: ComponentDef[] = [
     category: 'microcontroller',
     name: 'Arduino Uno',
     icon: 'Cpu',
+    imageUrl: '/arduino.png',
     pins: [
       ...Array.from({ length: 14 }, (_, i) => ({ id: `D${i}`, type: 'digital' as const, direction: 'both' as const })),
       ...Array.from({ length: 6 }, (_, i) => ({ id: `A${i}`, type: 'analog' as const, direction: 'input' as const })),
@@ -20,6 +21,7 @@ export const COMPONENTS: ComponentDef[] = [
     category: 'microcontroller',
     name: 'ESP32',
     icon: 'Wifi',
+    imageUrl: '/banana.png',
     pins: [
       ...Array.from({ length: 30 }, (_, i) => ({ id: `GPIO${i}`, type: 'digital' as const, direction: 'both' as const })),
     ],
@@ -46,6 +48,7 @@ export const COMPONENTS: ComponentDef[] = [
     category: 'sensor',
     name: 'Temperature',
     icon: 'Thermometer',
+    imageUrl: '/sensor.png',
     pins: [{ id: 'DATA', type: 'digital', direction: 'output' }],
     defaultValue: 25.0,
     simulationType: 'temperature',

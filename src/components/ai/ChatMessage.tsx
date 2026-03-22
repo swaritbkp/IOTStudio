@@ -103,3 +103,31 @@ export const ChatMessage = memo(({ message }: Props) => {
 });
 
 ChatMessage.displayName = 'ChatMessage';
+
+export function CircuitJSONBlock({ content, onApply }: { content: string, onApply: (data: any) => void }) {
+  try {
+    const match = content.match(/```json\n([\s\S]*?)```/);
+    if (!match || !match[1]) return null;
+    const data = JSON.parse(match[1]);
+    if (!data.components || !data.connections) return null;
+    return (
+      <div className="mt-2 mb-2 p-3 bg-bg-tertiary border border-accent/30 rounded-xl flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <div className="text-xs text-text-primary">
+            <div className="font-semibold text-accent">{data.title || 'AI Generated Circuit'}</div>
+            <div className="text-[10px] text-text-muted mt-0.5">{data.components.length} components, {data.connections.length} wires</div>
+          </div>
+          <button
+            onClick={() => onApply(data)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white hover:bg-accent-hover text-[10px] font-bold rounded-lg transition-colors shadow-lg shadow-accent/20"
+          >
+            <Code2 size={12} />
+            Build on Canvas
+          </button>
+        </div>
+      </div>
+    );
+  } catch (e) {
+    return null;
+  }
+}

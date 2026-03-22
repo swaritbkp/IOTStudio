@@ -13,6 +13,7 @@ export const ActuatorNode = memo(({ data, selected }: NodeProps) => {
     simulationType?: string;
     color?: string;
     nodeId: string;
+    description?: string;
   };
 
   const removeComponent = useBoardStore((s) => s.removeComponent);
@@ -151,6 +152,7 @@ export const ActuatorNode = memo(({ data, selected }: NodeProps) => {
           : 'border-border hover:border-border-active',
         'animate-drop-bounce'
       )}
+      title={d.description}
     >
       <Handle
         type="target"

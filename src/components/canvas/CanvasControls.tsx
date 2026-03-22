@@ -24,8 +24,13 @@ export function CanvasControls() {
       <button onClick={() => fitView({ padding: 0.2 })} className={btnClass} title="Fit View">
         <Maximize size={14} />
       </button>
-      <button onClick={autoLayout} className={btnClass} title="Auto Layout">
+      <button 
+        onClick={autoLayout} 
+        className={cn(btnClass, 'flex items-center gap-1.5 px-3 bg-accent/10 border-accent/20 text-accent hover:bg-accent/20 hover:border-accent/40 font-medium ml-2 shadow-sm')} 
+        title="Auto Layout Circuit"
+      >
         <LayoutGrid size={14} />
+        Tidy Canvas
       </button>
     </div>
   );

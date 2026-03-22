@@ -20,8 +20,12 @@ export const ComponentCard = memo(({ component, onClick }: Props) => {
         'transition-all hover:bg-bg-elevated cursor-pointer text-left'
       )}
     >
-      <div className="w-8 h-8 rounded-lg bg-accent-muted flex items-center justify-center shrink-0">
-        <IconComp size={16} className="text-accent" />
+      <div className="w-8 h-8 rounded-lg bg-accent-muted flex items-center justify-center shrink-0 overflow-hidden">
+        {component.imageUrl ? (
+          <img src={component.imageUrl} alt={component.name} className="w-full h-full object-cover" />
+        ) : (
+          <IconComp size={16} className="text-accent" />
+        )}
       </div>
       <div className="min-w-0">
         <div className="text-xs font-medium text-text-primary truncate">

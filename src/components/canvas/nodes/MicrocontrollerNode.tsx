@@ -8,9 +8,10 @@ export const MicrocontrollerNode = memo(({ data, selected }: NodeProps) => {
   const d = data as {
     label: string;
     icon: string;
+    imageUrl?: string;
     nodeId: string;
     pins: { id: string; type: string; direction: string }[];
-    description: string;
+    description?: string;
   };
 
   const removeComponent = useBoardStore((s) => s.removeComponent);
@@ -35,6 +36,7 @@ export const MicrocontrollerNode = memo(({ data, selected }: NodeProps) => {
           : 'border-border hover:border-border-active',
         'animate-drop-bounce'
       )}
+      title={d.description}
     >
       {/* Left pin handles */}
       <div className="absolute left-0 top-12 flex flex-col gap-1">
@@ -71,8 +73,12 @@ export const MicrocontrollerNode = memo(({ data, selected }: NodeProps) => {
       </div>
 
       <div className="flex flex-col items-center gap-2 px-6">
-        <div className="w-12 h-12 rounded-xl bg-accent-muted flex items-center justify-center">
-          <Cpu size={28} className="text-accent" />
+        <div className="w-16 h-16 rounded-xl bg-accent-muted flex items-center justify-center overflow-hidden">
+          {d.imageUrl ? (
+            <img src={d.imageUrl} alt={d.label} className="w-full h-full object-contain" />
+          ) : (
+            <Cpu size={28} className="text-accent" />
+          )}
         </div>
         <div className="text-sm font-semibold text-text-primary">{d.label}</div>
         <div className="text-[10px] text-text-secondary">{d.description}</div>

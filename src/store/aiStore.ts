@@ -62,6 +62,21 @@ RULES:
 - Use EXACT component names from the board state above
 - Write ONLY valid JavaScript using the API above
 - Keep explanations concise
+- When asked to generate a circuit or diagram, output EXACTLY this JSON block format:
+\`\`\`json
+{
+  "title": "Circuit Name",
+  "components": [
+    { "type": "arduino_uno", "position": { "x": 200, "y": 200 } },
+    { "type": "led_red", "position": { "x": 500, "y": 200 } }
+  ],
+  "connections": [
+    { "sourceType": "arduino_uno", "sourcePin": "D13", "targetType": "led_red", "targetPin": "ANODE" }
+  ],
+  "code": "let state = LOW;\\nfunction setup() { log('start'); }\\nfunction loop() { state = state === LOW ? HIGH : LOW; writeActuator('LED 1', state); delay(1000); }"
+}
+\`\`\`
+Valid component types: arduino_uno, esp32, raspberry_pi_pico, dht11, button, potentiometer, led_red, rgb_led, servo, buzzer, lcd_16x2.
 - When asked to generate code, output a complete code block with setup() + loop()`;
 }
 

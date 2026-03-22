@@ -12,6 +12,8 @@ import {
 import { useChartStore } from '../../store/chartStore';
 import { X } from 'lucide-react';
 import { useUIStore } from '../../store/uiStore';
+import { useState } from 'react';
+import { cn } from '../../utils/cn';
 
 const COLORS = [
   '#10B981',
@@ -28,6 +30,7 @@ export function DataCharts() {
   const series = useChartStore((s) => s.series);
   const show = useUIStore((s) => s.showCharts);
   const toggle = useUIStore((s) => s.toggleCharts);
+  const [oscilloscope, setOscilloscope] = useState(false);
 
   const { data, keys } = useMemo(() => {
     const seriesKeys = Object.keys(series);
@@ -52,17 +55,34 @@ export function DataCharts() {
       return row;
     });
 
+    if (oscilloscope && merged.length > 50) {
+      return { data: merged.slice(-50), keys: seriesKeys };
+    }
     return { data: merged, keys: seriesKeys };
-  }, [series]);
+  }, [series, oscilloscope]);
 
   if (!show || keys.length === 0) return null;
 
   return (
     <div className="bg-bg-surface border-t border-border p-3 h-48">
       <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-text-secondary font-medium">
-          Data Charts
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-text-secondary font-medium">
+            Data Charts
+          </span>
+          <button
+            onClick={() => setOscilloscope(!oscilloscope)}
+            className={cn(
+              "px-1.5 py-0.5 rounded text-[9px] transition-colors border",
+              oscilloscope
+                ? "bg-accent/20 text-accent border-accent/40"
+                : "bg-bg-surface text-text-muted border-border hover:text-text-primary"
+            )}
+            title="Rolling window view"
+          >
+            Oscilloscope
+          </button>
+        </div>
         <button
           onClick={toggle}
           className="p-1 rounded hover:bg-bg-elevated text-text-muted"

@@ -3,9 +3,10 @@ import { Send, Bot, Key, Trash2, ChevronUp, ChevronDown } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { useAIStore } from '../../store/aiStore';
 import { ModelSelector } from './ModelSelector';
-import { ChatMessage } from './ChatMessage';
+import { ChatMessage, CircuitJSONBlock } from './ChatMessage';
 import { SuggestionChips } from './SuggestionChips';
 import { ApiKeySetup } from './ApiKeySetup';
+import { useProjectStore } from '../../store/projectStore';
 
 export function AIDock() {
   const [input, setInput] = useState('');
@@ -16,6 +17,7 @@ export function AIDock() {
   const apiKey = useAIStore((s) => s.apiKey);
   const sendMessage = useAIStore((s) => s.sendMessage);
   const clearChat = useAIStore((s) => s.clearChat);
+  const loadProjectDef = useProjectStore((s) => s.loadProjectDef);
   const chatRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -67,7 +69,21 @@ export function AIDock() {
               </div>
             ) : (
               messages.map((msg) => (
-                <ChatMessage key={msg.id} message={msg} />
+                <div key={msg.id}>
+                  <ChatMessage message={msg} />
+                  {msg.role === 'assistant' && msg.content.includes('\`\`\`json') && (
+                    <CircuitJSONBlock content={msg.content} onApply={(data) => {
+                      loadProjectDef({
+                        ...data,
+                        id: crypto.randomUUID(),
+                        difficulty: 1,
+                        category: 'Beginner',
+                        description: 'AI Generated Circuit',
+                        concepts: ['AI'],
+                      });
+                    }} />
+                  )}
+                </div>
               ))
             )}
           </div>

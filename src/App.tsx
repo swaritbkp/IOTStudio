@@ -8,6 +8,7 @@ import { useCodeStore } from './store/codeStore';
 import { useChartStore } from './store/chartStore';
 import { useProjectStore } from './store/projectStore';
 import { useHistoryStore } from './store/historyStore';
+import { useUIStore } from './store/uiStore';
 
 export default function App() {
   const engineRef = useRef<SimulationEngine | null>(null);
@@ -96,6 +97,24 @@ export default function App() {
     });
     return unsub;
   }, [updateNodeData, addLog, addDataPoint, setError, setRunning]);
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        useUIStore.getState().toggleSaveModal();
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        const isRunning = useCodeStore.getState().isRunning;
+        if (isRunning) handleStop();
+        else handleRun();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleRun, handleStop]);
 
   return (
     <ReactFlowProvider>

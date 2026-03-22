@@ -9,6 +9,7 @@ export interface ComponentDef {
   category: 'microcontroller' | 'sensor' | 'actuator' | 'module';
   name: string;
   icon: string;
+  imageUrl?: string;
   pins: PinDef[];
   defaultValue: unknown;
   simulationType: string;
