@@ -5,7 +5,7 @@ export default async function handler(req: Request) {
     return new Response(null, { status: 405 });
   }
 
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const apiKey = (process as any).env.OPENROUTER_API_KEY;
   if (!apiKey) {
     return new Response(
       JSON.stringify({ error: 'Server API key not configured' }),
