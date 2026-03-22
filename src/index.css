@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0C0F12;
+  --color-bg-surface: #151A20;
+  --color-bg-elevated: #1C2128;
+  --color-bg-canvas: #0A0D10;
+  --color-border: #252D38;
+  --color-border-active: #3D4F65;
+  --color-accent: #10B981;
+  --color-accent-hover: #34D399;
+  --color-accent-muted: rgba(16, 185, 129, 0.15);
+  --color-text-primary: #E8ECF1;
+  --color-text-secondary: #8B95A5;
+  --color-text-muted: #5A6577;
+  --color-error: #EF4444;
+  --color-warning: #F59E0B;
+  --font-ui: 'DM Sans', sans-serif;
+  --font-code: 'IBM Plex Mono', monospace;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  margin: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+}
+
+/* LED glow animation */
+@keyframes led-glow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+
+/* Motor spin animation */
+@keyframes motor-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Buzzer pulse */
+@keyframes buzzer-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Run button ripple */
+@keyframes run-ripple {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  100% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+}
+
+/* Wire draw animation */
+@keyframes wire-dash {
+  to { stroke-dashoffset: -20; }
+}
+
+/* Drop bounce */
+@keyframes drop-bounce {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-led-glow { animation: led-glow 1.5s ease-in-out infinite; }
+.animate-motor-spin { animation: motor-spin 1s linear infinite; }
+.animate-buzzer-pulse { animation: buzzer-pulse 0.3s ease-in-out infinite; }
+.animate-run-ripple { animation: run-ripple 1.5s ease-out infinite; }
+.animate-drop-bounce { animation: drop-bounce 0.3s ease-out; }
+
+/* React Flow overrides */
+.react-flow__background {
+  background: var(--color-bg-canvas) !important;
+}
+
+.react-flow__minimap {
+  background: var(--color-bg-surface) !important;
+  border-radius: 8px;
+  border: 1px solid var(--color-border) !important;
+}
+
+.react-flow__controls {
+  border-radius: 8px;
+  border: 1px solid var(--color-border) !important;
+  overflow: hidden;
+}
+
+.react-flow__controls-button {
+  background: var(--color-bg-surface) !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-border) !important;
+}
+
+.react-flow__controls-button:hover {
+  background: var(--color-bg-elevated) !important;
+}
+
+.react-flow__handle {
+  width: 14px !important;
+  height: 14px !important;
+  border: 2px solid var(--color-bg-elevated) !important;
+  transition: all 0.2s ease;
+  z-index: 10 !important;
+}
+
+.react-flow__handle-left {
+  left: -7px !important;
+}
+
+.react-flow__handle-right {
+  right: -7px !important;
+}
+
+.react-flow__handle:hover,
+.react-flow__handle.connecting {
+  transform: scale(1.3);
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-bg-primary) !important;
+}
+
+/* CodeMirror dark theme overrides */
+.cm-editor {
+  height: 100%;
+  font-family: var(--font-code) !important;
+  font-size: 13px;
+}
+
+.cm-editor .cm-content {
+  font-family: var(--font-code) !important;
+}
+
+.cm-editor.cm-focused {
+  outline: none !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-active);
+}

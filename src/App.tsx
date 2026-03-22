@@ -1,0 +1,105 @@
+import { useEffect, useRef, useCallback } from 'react';
+import { ReactFlowProvider } from '@xyflow/react';
+import '@xyflow/react/dist/style.css';
+import { AppShell } from './components/layout/AppShell';
+import { SimulationEngine } from './engine/SimulationEngine';
+import { useBoardStore } from './store/boardStore';
+import { useCodeStore } from './store/codeStore';
+import { useChartStore } from './store/chartStore';
+import { useProjectStore } from './store/projectStore';
+import { useHistoryStore } from './store/historyStore';
+
+export default function App() {
+  const engineRef = useRef<SimulationEngine | null>(null);
+  const setRunning = useCodeStore((s) => s.setRunning);
+  const addLog = useCodeStore((s) => s.addLog);
+  const setError = useCodeStore((s) => s.setError);
+  const addDataPoint = useChartStore((s) => s.addDataPoint);
+  const updateNodeData = useBoardStore((s) => s.updateNodeData);
+  const initializeProject = useProjectStore((s) => s.initialize);
+  const autoSave = useHistoryStore((s) => s.autoSave);
+
+  useEffect(() => {
+    initializeProject();
+  }, [initializeProject]);
+
+  // Auto-save every 60 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      autoSave();
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [autoSave]);
+
+  const handleRun = useCallback(() => {
+    const { code, speed } = useCodeStore.getState();
+    const { nodes } = useBoardStore.getState();
+
+    useCodeStore.getState().clearLogs();
+    useChartStore.getState().clearData();
+    setError(null);
+
+    const engine = new SimulationEngine({
+      onActuatorChange: (name, value) => {
+        updateNodeData(name, value);
+      },
+      onLog: (msg, ts) => {
+        addLog(msg, ts);
+      },
+      onLogData: (key, value, ts) => {
+        addDataPoint(key, value, ts);
+      },
+      onError: (err) => {
+        setError(err);
+        setRunning(false);
+      },
+    });
+
+    engine.start(code, speed, nodes);
+    engineRef.current = engine;
+    setRunning(true);
+  }, [setRunning, addLog, setError, addDataPoint, updateNodeData]);
+
+  const handleStop = useCallback(() => {
+    engineRef.current?.stop();
+    engineRef.current = null;
+    setRunning(false);
+  }, [setRunning]);
+
+  // Update speed while running
+  useEffect(() => {
+    const unsub = useCodeStore.subscribe((state, prevState) => {
+      if (engineRef.current?.isActive() && state.speed !== prevState.speed) {
+        const speed = state.speed;
+        const { code } = useCodeStore.getState();
+        const { nodes } = useBoardStore.getState();
+        engineRef.current.stop();
+
+        const engine = new SimulationEngine({
+          onActuatorChange: (name, value) => {
+            updateNodeData(name, value);
+          },
+          onLog: (msg, ts) => {
+            addLog(msg, ts);
+          },
+          onLogData: (key, value, ts) => {
+            addDataPoint(key, value, ts);
+          },
+          onError: (err) => {
+            setError(err);
+            setRunning(false);
+          },
+        });
+        engine.start(code, speed, nodes);
+        engineRef.current = engine;
+      }
+    });
+    return unsub;
+  }, [updateNodeData, addLog, addDataPoint, setError, setRunning]);
+
+  return (
+    <ReactFlowProvider>
+      <AppShell onRun={handleRun} onStop={handleStop} />
+    </ReactFlowProvider>
+  );
+}
