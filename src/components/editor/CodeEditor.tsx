@@ -2,10 +2,23 @@ import { useRef, useEffect } from 'react';
 import { EditorView, basicSetup } from 'codemirror';
 import { ViewUpdate, hoverTooltip } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
-import { EditorState } from '@codemirror/state';
+import { EditorState, Compartment } from '@codemirror/state';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { autocompletion } from '@codemirror/autocomplete';
 import { useCodeStore } from '../../store/codeStore';
+import { useUIStore } from '../../store/uiStore';
+
+const themeCompartment = new Compartment();
+
+const iotLight = EditorView.theme({
+  '&': { backgroundColor: 'var(--app-bg-primary)', color: 'var(--app-text-primary)' },
+  '.cm-gutters': { background: 'var(--app-bg-surface)', color: 'var(--app-text-muted)', border: 'none' },
+  '.cm-activeLineGutter': { background: 'var(--app-bg-elevated)' },
+  '.cm-activeLine': { background: 'var(--app-accent-muted)' },
+  '.cm-cursor': { borderLeftColor: 'var(--app-text-primary)' },
+  '.cm-selectionBackground': { background: 'var(--app-accent-muted) !important' },
+  '.cm-tooltip': { background: 'var(--app-bg-elevated)', border: '1px solid var(--app-border)' },
+}, { dark: false });
 
 const iotCompletions = [
   { label: 'readSensor', type: 'function', info: '(name: string) → number | boolean' },
@@ -46,7 +59,7 @@ const tooltipExtension = hoverTooltip((view, pos, side) => {
       above: true,
       create() {
         const dom = document.createElement("div");
-        dom.className = "p-2 text-xs font-[family-name:var(--font-code)] bg-[#1e2329] border border-[#2d333b] shadow-xl rounded-md max-w-xs whitespace-pre-wrap text-emerald-300";
+        dom.className = "p-2 text-xs font-[family-name:var(--font-code)] bg-bg-elevated border border-border shadow-xl rounded-md max-w-xs whitespace-pre-wrap text-accent";
         dom.textContent = doc;
         return {dom};
       }
@@ -66,12 +79,14 @@ export function CodeEditor() {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const currentTheme = useUIStore.getState().theme;
+
     const state = EditorState.create({
       doc: code,
       extensions: [
         basicSetup,
         javascript(),
-        oneDark,
+        themeCompartment.of(currentTheme === 'dark' ? oneDark : iotLight),
         autocompletion({
           override: [
             (context) => {
@@ -100,7 +115,7 @@ export function CodeEditor() {
             fontFamily: 'var(--font-code)',
           },
           '.cm-gutters': {
-            background: '#0C0F12',
+            background: 'var(--app-bg-surface)',
             border: 'none',
           },
         }),
@@ -114,7 +129,15 @@ export function CodeEditor() {
 
     viewRef.current = view;
 
+    // Subscribe to theme changes and reconfigure
+    const unsub = useUIStore.subscribe((s) => {
+      view.dispatch({
+        effects: themeCompartment.reconfigure(s.theme === 'dark' ? oneDark : iotLight),
+      });
+    });
+
     return () => {
+      unsub();
       view.destroy();
     };
     // Only run on mount

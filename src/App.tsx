@@ -98,6 +98,35 @@ export default function App() {
     return unsub;
   }, [updateNodeData, addLog, addDataPoint, setError, setRunning]);
 
+  // Wire sensor UI controls to running engine
+  useEffect(() => {
+    const unsub = useBoardStore.subscribe((state, prev) => {
+      if (!engineRef.current?.isActive()) return;
+      for (const node of state.nodes) {
+        const prevNode = prev.nodes.find((n) => n.id === node.id);
+        if (
+          prevNode &&
+          (node.data as { category?: string }).category === 'sensor' &&
+          (node.data as { liveValue?: unknown }).liveValue !==
+            (prevNode.data as { liveValue?: unknown }).liveValue
+        ) {
+          engineRef.current.setSensorValue(
+            (node.data as { label: string }).label,
+            (node.data as { liveValue: unknown }).liveValue
+          );
+        }
+      }
+    });
+    return unsub;
+  }, []);
+
+  // Apply theme class to <html> element for CSS variable switching
+  const theme = useUIStore((s) => s.theme);
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light');
+    document.documentElement.classList.remove(theme === 'light' ? 'dark' : 'light');
+  }, [theme]);
+
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

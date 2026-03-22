@@ -11,6 +11,7 @@ const MODEL_STORAGE = 'iotstudio_selected_model';
 function getStoredKey(): string {
   return (
     localStorage.getItem(API_KEY_STORAGE) ||
+    (import.meta.env.VITE_OPENROUTER_KEY as string) ||
     (import.meta.env.VITE_DEFAULT_OPENROUTER_KEY as string) ||
     ''
   );
@@ -111,7 +112,8 @@ export const useAIStore = create<AIState>()((set, get) => ({
 
   sendMessage: async (content) => {
     const { apiKey, selectedModel, messages } = get();
-    if (!apiKey) return;
+    // Use user key, env key, or empty string (triggers server proxy fallback)
+    const activeKey = apiKey || (import.meta.env.VITE_OPENROUTER_KEY as string) || '';
 
     const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
@@ -142,7 +144,7 @@ export const useAIStore = create<AIState>()((set, get) => ({
 
       let fullContent = '';
       for await (const chunk of streamChat(
-        apiKey,
+        activeKey,
         selectedModel,
         history,
         buildSystemPrompt()

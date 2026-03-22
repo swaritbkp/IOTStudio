@@ -53,6 +53,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 25.0,
     simulationType: 'temperature',
     description: 'DHT11 — 15-45°C range',
+    interactable: true,
   },
   {
     type: 'ldr',
@@ -63,6 +64,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 512,
     simulationType: 'light',
     description: 'LDR — 0-1023 analog',
+    interactable: true,
   },
   {
     type: 'humidity',
@@ -73,6 +75,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 60.0,
     simulationType: 'humidity',
     description: '30-90% relative humidity',
+    interactable: true,
   },
   {
     type: 'pir',
@@ -83,6 +86,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: false,
     simulationType: 'motion',
     description: 'PIR motion detection',
+    interactable: true,
   },
   {
     type: 'hcsr04',
@@ -96,6 +100,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 100.0,
     simulationType: 'ultrasonic',
     description: 'HC-SR04 — 2-400cm range',
+    interactable: true,
   },
   {
     type: 'soil_moisture',
@@ -106,6 +111,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 512,
     simulationType: 'soil',
     description: '0-1023 moisture level',
+    interactable: true,
   },
   {
     type: 'sound',
@@ -116,6 +122,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 100,
     simulationType: 'sound',
     description: 'Microphone — 0-1023',
+    interactable: true,
   },
   {
     type: 'mq2',
@@ -126,6 +133,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 100,
     simulationType: 'gas',
     description: 'MQ-2 gas sensor — 0-1023',
+    interactable: true,
   },
   {
     type: 'potentiometer',
@@ -158,6 +166,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: false,
     simulationType: 'ir',
     description: 'Infrared proximity sensor',
+    interactable: true,
   },
   {
     type: 'flame',
@@ -168,6 +177,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 0,
     simulationType: 'flame',
     description: 'Flame sensor — 0-1023',
+    interactable: true,
   },
   {
     type: 'bmp180',
@@ -181,6 +191,7 @@ export const COMPONENTS: ComponentDef[] = [
     defaultValue: 1013.25,
     simulationType: 'pressure',
     description: 'BMP180 — 300-1100 hPa',
+    interactable: true,
   },
   {
     type: 'tcs3200',

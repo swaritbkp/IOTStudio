@@ -34,10 +34,6 @@ export function AIDock() {
   };
 
   const handleSuggestion = (text: string) => {
-    if (!apiKey) {
-      setShowKeySetup(true);
-      return;
-    }
     sendMessage(text);
     setExpanded(true);
   };
@@ -108,32 +104,31 @@ export function AIDock() {
             <Bot size={14} className="text-accent shrink-0" />
             <ModelSelector />
 
-            {apiKey ? (
-              <div className="flex-1 flex gap-1.5">
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask AI..."
-                  className="flex-1 px-3 py-1.5 bg-bg-primary border border-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
-                  disabled={isLoading}
-                />
-                <button
-                  onClick={handleSend}
-                  disabled={!input.trim() || isLoading}
-                  className="p-1.5 rounded-lg bg-accent text-white hover:bg-accent-hover disabled:opacity-40 transition-colors"
-                >
-                  <Send size={12} />
-                </button>
-              </div>
-            ) : (
+            <div className="flex-1 flex gap-1.5">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Ask AI..."
+                className="flex-1 px-3 py-1.5 bg-bg-primary border border-border rounded-lg text-xs text-text-primary placeholder:text-text-muted focus:outline-none focus:border-accent"
+                disabled={isLoading}
+              />
+              <button
+                onClick={handleSend}
+                disabled={!input.trim() || isLoading}
+                className="p-1.5 rounded-lg bg-accent text-white hover:bg-accent-hover disabled:opacity-40 transition-colors"
+              >
+                <Send size={12} />
+              </button>
+            </div>
+            {!apiKey && (
               <button
                 onClick={() => setShowKeySetup(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent/20 text-accent text-xs hover:bg-accent/30"
+                className="p-1.5 rounded text-text-muted hover:text-accent"
+                title="Add your own API key"
               >
                 <Key size={12} />
-                Set up AI
               </button>
             )}
 

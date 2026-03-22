@@ -34,8 +34,8 @@ export function ApiKeySetup({ onClose }: Props) {
         </div>
 
         <p className="text-sm text-text-secondary mb-4">
-          IoT Studio uses OpenRouter for AI features. Get a free API key at
-          openrouter.ai — no credit card needed.
+          AI works out of the box! For unlimited usage, add your own free
+          OpenRouter API key — no credit card needed.
         </p>
 
         <a
@@ -74,7 +74,7 @@ export function ApiKeySetup({ onClose }: Props) {
         </div>
 
         <p className="text-[10px] text-text-muted mt-3">
-          Your key is stored locally and only sent to openrouter.ai.
+          Your key is stored locally and only sent to openrouter.ai. Without a key, requests go through our server proxy.
         </p>
       </div>
     </div>

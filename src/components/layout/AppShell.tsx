@@ -23,9 +23,10 @@ export function AppShell({ onRun, onStop }: Props) {
   const showSaveModal = useUIStore((s) => s.showSaveModal);
   const activeTab = useUIStore((s) => s.activeTab);
   const showPalette = useUIStore((s) => s.showPalette);
+  const theme = useUIStore((s) => s.theme);
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden">
+    <div className={`flex flex-col h-screen w-screen overflow-hidden ${theme === 'light' ? 'light' : 'dark'} bg-bg-primary text-text-primary transition-colors duration-300`}>
       <CommandBar onRun={onRun} onStop={onStop} />
 
       {/* Desktop layout */}

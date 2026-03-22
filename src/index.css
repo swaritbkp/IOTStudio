@@ -1,21 +1,65 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+:root {
+  --app-bg-primary: #0C0F12;
+  --app-bg-surface: #151A20;
+  --app-bg-elevated: #1C2128;
+  --app-bg-canvas: #0A0D10;
+  --app-border: #252D38;
+  --app-border-active: #3D4F65;
+  --app-accent: #0ea5e9;
+  --app-accent-hover: #38bdf8;
+  --app-accent-muted: rgba(14, 165, 233, 0.15);
+  --app-text-primary: #E8ECF1;
+  --app-text-secondary: #8B95A5;
+  --app-text-muted: #5A6577;
+  --app-error: #EF4444;
+  --app-warning: #F59E0B;
+  --app-success: #22C55E;
+  --app-gradient-accent: linear-gradient(135deg, #0ea5e9, #8b5cf6);
+  --app-gradient-surface: linear-gradient(180deg, #151A20, #0C0F12);
+  --app-shadow-glow: 0 0 20px rgba(14, 165, 233, 0.15);
+  --app-shadow-accent: 0 4px 14px rgba(14, 165, 233, 0.25);
+}
+
+:root.light {
+  --app-bg-primary: #F1F5F9;
+  --app-bg-surface: #FFFFFF;
+  --app-bg-elevated: #E2E8F0;
+  --app-bg-canvas: #CBD5E1;
+  --app-border: #CBD5E1;
+  --app-border-active: #94A3B8;
+  --app-accent: #0284c7;
+  --app-accent-hover: #0369a1;
+  --app-accent-muted: rgba(2, 132, 199, 0.15);
+  --app-text-primary: #0F172A;
+  --app-text-secondary: #475569;
+  --app-text-muted: #64748B;
+  --app-error: #DC2626;
+  --app-warning: #D97706;
+  --app-success: #16A34A;
+  --app-gradient-accent: linear-gradient(135deg, #0284c7, #7c3aed);
+  --app-gradient-surface: linear-gradient(180deg, #FFFFFF, #F1F5F9);
+  --app-shadow-glow: 0 0 20px rgba(2, 132, 199, 0.1);
+  --app-shadow-accent: 0 4px 14px rgba(2, 132, 199, 0.15);
+}
+
 @theme {
-  --color-bg-primary: #0C0F12;
-  --color-bg-surface: #151A20;
-  --color-bg-elevated: #1C2128;
-  --color-bg-canvas: #0A0D10;
-  --color-border: #252D38;
-  --color-border-active: #3D4F65;
-  --color-accent: #10B981;
-  --color-accent-hover: #34D399;
-  --color-accent-muted: rgba(16, 185, 129, 0.15);
-  --color-text-primary: #E8ECF1;
-  --color-text-secondary: #8B95A5;
-  --color-text-muted: #5A6577;
-  --color-error: #EF4444;
-  --color-warning: #F59E0B;
+  --color-bg-primary: var(--app-bg-primary);
+  --color-bg-surface: var(--app-bg-surface);
+  --color-bg-elevated: var(--app-bg-elevated);
+  --color-bg-canvas: var(--app-bg-canvas);
+  --color-border: var(--app-border);
+  --color-border-active: var(--app-border-active);
+  --color-accent: var(--app-accent);
+  --color-accent-hover: var(--app-accent-hover);
+  --color-accent-muted: var(--app-accent-muted);
+  --color-text-primary: var(--app-text-primary);
+  --color-text-secondary: var(--app-text-secondary);
+  --color-text-muted: var(--app-text-muted);
+  --color-error: var(--app-error);
+  --color-warning: var(--app-warning);
   --font-ui: 'DM Sans', sans-serif;
   --font-code: 'IBM Plex Mono', monospace;
 }
@@ -75,6 +119,22 @@ body {
 .animate-buzzer-pulse { animation: buzzer-pulse 0.3s ease-in-out infinite; }
 .animate-run-ripple { animation: run-ripple 1.5s ease-out infinite; }
 .animate-drop-bounce { animation: drop-bounce 0.3s ease-out; }
+
+/* Premium UI utilities */
+.gradient-text {
+  background: var(--app-gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glow-border {
+  box-shadow: var(--app-shadow-glow);
+}
+
+.accent-glow {
+  box-shadow: var(--app-shadow-accent);
+}
 
 /* React Flow overrides */
 .react-flow__background {

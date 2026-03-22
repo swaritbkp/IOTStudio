@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 interface UIState {
+  theme: 'light' | 'dark';
   showPalette: boolean;
   showHistory: boolean;
   showSettings: boolean;
@@ -10,6 +11,7 @@ interface UIState {
   activeTab: 'canvas' | 'code' | 'ai' | 'history';
   palettePanelWidth: number;
   editorPanelWidth: number;
+  toggleTheme: () => void;
   togglePalette: () => void;
   toggleHistory: () => void;
   toggleSettings: () => void;
@@ -22,6 +24,7 @@ interface UIState {
 }
 
 export const useUIStore = create<UIState>()((set) => ({
+  theme: (localStorage.getItem('iotstudio_theme') as 'light' | 'dark') || 'dark',
   showPalette: true,
   showHistory: false,
   showSettings: false,
@@ -31,6 +34,11 @@ export const useUIStore = create<UIState>()((set) => ({
   activeTab: 'canvas',
   palettePanelWidth: 240,
   editorPanelWidth: 420,
+  toggleTheme: () => set((s) => {
+    const newTheme = s.theme === 'light' ? 'dark' : 'light';
+    localStorage.setItem('iotstudio_theme', newTheme);
+    return { theme: newTheme };
+  }),
   togglePalette: () => set((s) => ({ showPalette: !s.showPalette })),
   toggleHistory: () => set((s) => ({ showHistory: !s.showHistory })),
   toggleSettings: () => set((s) => ({ showSettings: !s.showSettings })),

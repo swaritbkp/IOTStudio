@@ -1,4 +1,5 @@
 const OPENROUTER_BASE = 'https://openrouter.ai/api/v1';
+const PROXY_BASE = '/api';
 
 export async function* streamChat(
   apiKey: string,
@@ -6,14 +7,23 @@ export async function* streamChat(
   messages: { role: string; content: string }[],
   systemPrompt: string
 ): AsyncGenerator<string> {
-  const response = await fetch(`${OPENROUTER_BASE}/chat/completions`, {
+  const useProxy = !apiKey;
+  const url = useProxy
+    ? `${PROXY_BASE}/chat`
+    : `${OPENROUTER_BASE}/chat/completions`;
+
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  if (!useProxy) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+    headers['HTTP-Referer'] = 'https://iot-studio.vercel.app';
+    headers['X-Title'] = 'IoT Studio by Bilota AI';
+  }
+
+  const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-      'HTTP-Referer': 'https://iot-studio.bilota.ai',
-      'X-Title': 'IoT Studio by Bilota AI',
-    },
+    headers,
     body: JSON.stringify({
       model,
       messages: [{ role: 'system', content: systemPrompt }, ...messages],

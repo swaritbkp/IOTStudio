@@ -92,17 +92,17 @@ export function DataCharts() {
       </div>
       <ResponsiveContainer width="100%" height="85%">
         <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#252D38" />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--app-border)" />
           <XAxis
             dataKey="time"
-            tick={{ fontSize: 9, fill: '#5A6577' }}
+            tick={{ fontSize: 9, fill: 'var(--app-text-muted)' }}
             tickFormatter={(v: number) => `${v.toFixed(0)}s`}
           />
-          <YAxis tick={{ fontSize: 9, fill: '#5A6577' }} width={40} />
+          <YAxis tick={{ fontSize: 9, fill: 'var(--app-text-muted)' }} width={40} />
           <Tooltip
             contentStyle={{
-              background: '#1C2128',
-              border: '1px solid #252D38',
+              background: 'var(--app-bg-elevated)',
+              border: '1px solid var(--app-border)',
               borderRadius: 8,
               fontSize: 11,
             }}

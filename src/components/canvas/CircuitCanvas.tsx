@@ -50,7 +50,7 @@ export function CircuitCanvas() {
         <Background
           gap={20}
           size={1}
-          color="#252D38"
+          color="var(--app-border)"
         />
         <MiniMap
           nodeStrokeWidth={3}
@@ -60,8 +60,7 @@ export function CircuitCanvas() {
             if (cat === 'sensor') return '#3B82F6';
             return '#F59E0B';
           }}
-          maskColor="rgba(12, 15, 18, 0.8)"
-          style={{ background: '#151A20' }}
+          style={{ background: 'var(--app-bg-surface)' }}
         />
       </ReactFlow>
       <CanvasControls />
